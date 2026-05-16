@@ -1,0 +1,5 @@
+/* Global reset — all styling is in App.css */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { background: #0d0f14; color: #e8ecf7; min-height: 100vh; }
+#root { min-height: 100vh; }
