@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../utils/axios';
 import { encrypt } from '../utils/crypto';
 
 interface LoginFormProps {
@@ -50,7 +50,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess, onSwitchToRegiste
         password: encrypt(password),
       };
 
-      const { data } = await axios.post('/api/login', payload);
+      const { data } = await api.post('/login', payload);
       onLoginSuccess(data.token, data.student._id);
     } catch (err: any) {
       const msg = err.response?.data?.message || 'Login failed. Please try again.';

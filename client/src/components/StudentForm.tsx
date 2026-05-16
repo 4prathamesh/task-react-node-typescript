@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/axios';
 import { encrypt } from '../utils/crypto';
 
 export interface StudentData {
@@ -127,9 +127,9 @@ const StudentForm: React.FC<StudentFormProps> = ({ mode, initialData, onSuccess,
       }
 
       if (mode === 'create') {
-        await axios.post('/api/register', payload);
+        await api.post('/register', payload);
       } else {
-        await axios.put(`/api/student/${initialData?._id}`, payload);
+        await api.put(`/student/${initialData?._id}`, payload);
       }
 
       onSuccess();

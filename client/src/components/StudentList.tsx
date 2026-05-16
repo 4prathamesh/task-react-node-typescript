@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import api from '../utils/axios';
 import { decryptStudentFields } from '../utils/crypto';
 import StudentForm, { StudentData } from './StudentForm';
 
@@ -61,7 +61,7 @@ const StudentList: React.FC<StudentListProps> = ({ onLogout }) => {
     setLoading(true);
     setError('');
     try {
-      const { data } = await axios.get('/api/students');
+      const { data } = await api.get('/students');
       // Backend sends Level-1 encrypted data; frontend decrypts
       const decrypted = data.students.map(decryptStudent);
       setStudents(decrypted);
@@ -104,7 +104,7 @@ const StudentList: React.FC<StudentListProps> = ({ onLogout }) => {
   const handleDelete = async () => {
     if (!deleteId) return;
     try {
-      await axios.delete(`/api/student/${deleteId}`);
+      await api.delete(`/student/${deleteId}`);
       setDeleteId(null);
       fetchStudents();
       showSuccess('Student deleted successfully!');
