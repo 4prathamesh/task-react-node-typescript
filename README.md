@@ -134,6 +134,28 @@ Encryption is handled in two layers to protect data on the client and in storage
 - `server/src/utils/crypto.ts` - encryption/decryption helpers for backend
 - `client/src/utils/crypto.ts` - frontend encryption/decryption helpers
 
+## Screenshots
+
+Below are the available screenshot previews for the app:
+
+- `screenshots/login.png` - login screen
+- `screenshots/register.png` - registration screen
+- `screenshots/dashboard.png` - student dashboard or listing page
+- `screenshots/details.png` - student detail view
+- `screenshots/updateStudent.png` - update student screen
+
+### Screenshot previews
+
+![Login screen](screenshots/login.png)
+
+![Register screen](screenshots/register.png)
+
+![Dashboard screen](screenshots/dashboard.png)
+
+![Details screen](screenshots/details.png)
+
+![Update student screen](screenshots/updateStudent.png)
+
 ## Notes
 
 - Keep encryption keys secret and never commit `.env` files to source control.
