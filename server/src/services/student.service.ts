@@ -144,6 +144,15 @@ export async function updateStudentService(
 
   if (data.email) {
     updateData.email = processIncomingField(data.email);
+    const plainEmail = decryptFromFrontend(data.email);
+
+    const students = await Student.find();
+
+    for (const s of students) {
+      if (decryptFromStorage(s.email) === plainEmail) {
+        throw new Error('EMAIL_EXISTS');
+      }
+    }
   }
 
   if (data.phoneNumber) {

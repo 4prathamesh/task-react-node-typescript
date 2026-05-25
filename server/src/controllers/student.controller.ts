@@ -110,6 +110,12 @@ export async function updateStudent(
       return;
     }
 
+    if(error.message === 'EMAIL_EXISTS'){
+      res.status(409).json({
+        message: 'Email already in use by another student',
+      });
+    }
+
     res.status(500).json({
       message: 'Server error during update',
     });
