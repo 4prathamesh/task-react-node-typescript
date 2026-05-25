@@ -39,7 +39,7 @@ This repository contains a full-stack student management application built with 
 ### 1. Clone the repository
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/4prathamesh/task-react-node-typescript
 cd "e:\Node Js\task-react-node-typescript"
 ```
 
