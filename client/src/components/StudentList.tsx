@@ -105,6 +105,16 @@ const StudentList: React.FC<StudentListProps> = ({ onLogout }) => {
     if (!deleteId) return;
     try {
       await api.delete(`/student/${deleteId}`);
+      const loggedInUserId = localStorage.getItem("userId");
+
+      if (loggedInUserId === deleteId) {
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("userId");
+
+        onLogout();
+
+        return;
+      }
       setDeleteId(null);
       fetchStudents();
       showSuccess('Student deleted successfully!');

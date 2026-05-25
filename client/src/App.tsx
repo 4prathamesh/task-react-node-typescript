@@ -18,14 +18,17 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const handleLoginSuccess = (newToken: string, _studentId: string) => {
+  const handleLoginSuccess = (newToken: string, studentId: string) => {
     localStorage.setItem('auth_token', newToken);
+
+    localStorage.setItem('userId', studentId);
     setToken(newToken);
     setView('dashboard');
   };
 
   const handleLogout = () => {
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('userId');
     setToken(null);
     setView('login');
   };

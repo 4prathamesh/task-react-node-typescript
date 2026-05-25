@@ -1,6 +1,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import User from '../models/Student';
 
 export interface AuthRequest extends Request {
   user?: {
@@ -9,7 +10,7 @@ export interface AuthRequest extends Request {
   };
 }
 
-export const authMiddleware = (
+export const authMiddleware = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
@@ -37,10 +38,19 @@ export const authMiddleware = (
       email: string;
     };
 
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "User no longer exists",
+      });
+    }
+
     // Attach user to request
     req.user = {
-      id: decoded.id,
-      email: decoded.email,
+      id: user._id.toString(),
+      email: user.email,
     };
 
     next();
