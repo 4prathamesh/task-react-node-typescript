@@ -79,8 +79,7 @@ export async function loginStudentService(data: any) {
 
   const plainEmail = decryptFromFrontend(email);
   const plainPassword = decryptFromFrontend(password);
-console.log(plainEmail+'EMAIL');
-console.log(plainPassword+'PASSWORD');
+
   const students = await Student.find();
 
   let foundStudent: IStudent | null = null;

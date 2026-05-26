@@ -10,14 +10,14 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://prathameshroot:roo
 async function startServer() {
   try {
     await mongoose.connect(MONGODB_URI);
-    console.log('✅ Connected to MongoDB');
+    console.log(' Connected to MongoDB');
 
     app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
-      console.log(`🔐 2-Level encryption active`);
+      console.log(` Server running on http://localhost:${PORT}`);
+      console.log(` 2-Level encryption active`);
     });
   } catch (error) {
-    console.error('❌ Failed to connect to MongoDB:', error);
+    console.error(' Failed to connect to MongoDB:', error);
     process.exit(1);
   }
 }

@@ -114,6 +114,7 @@ export async function updateStudent(
       res.status(409).json({
         message: 'Email already in use by another student',
       });
+      return;
     }
 
     res.status(500).json({
