@@ -8,6 +8,7 @@ import {
   processIncomingField,
   processOutgoingField,
 } from '../utils/crypto';
+import { AppError } from '../utils/AppError';
 
 
 // Remove sensitive fields + prepare encrypted response
@@ -50,7 +51,10 @@ export async function registerStudentService(data: any) {
 
   for (const s of students) {
     if (decryptFromStorage(s.email) === plainEmail) {
-      throw new Error('EMAIL_EXISTS');
+      throw new AppError(
+        "Email already registered",
+        409
+      );
     }
   }
 
@@ -92,7 +96,10 @@ export async function loginStudentService(data: any) {
   }
 
   if (!foundStudent) {
-    throw new Error('INVALID_CREDENTIALS');
+    throw new AppError(
+      'Invalid email or password',
+      401
+    )
   }
 
   const passwordMatch = await bcrypt.compare(
@@ -101,7 +108,10 @@ export async function loginStudentService(data: any) {
   );
 
   if (!passwordMatch) {
-    throw new Error('INVALID_CREDENTIALS');
+    throw new AppError(
+      'Invalid email or password',
+      401,
+    )
   }
 
   const token = jwt.sign(
@@ -149,7 +159,10 @@ export async function updateStudentService(
 
     for (const s of students) {
       if (decryptFromStorage(s.email) === plainEmail) {
-        throw new Error('EMAIL_EXISTS');
+        throw new AppError(
+          "Email already in use",
+          409
+        );
       }
     }
   }
@@ -192,7 +205,10 @@ export async function updateStudentService(
   );
 
   if (!student) {
-    throw new Error('STUDENT_NOT_FOUND');
+    throw new AppError(
+      "Student not found",
+      404
+    );
   }
 
   return prepareStudentForFrontend(student);
@@ -204,8 +220,10 @@ export async function deleteStudentService(id: string) {
   const student = await Student.findByIdAndDelete(id);
 
   if (!student) {
-    throw new Error('STUDENT_NOT_FOUND');
+    throw new AppError(
+      "Student not found",
+      404
+    )
   }
-
   return true;
 }

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import studentRoutes from './routes/student.routes';
+import { globalErrorHandler } from './middleware/error.middleware';
 
 const app = express();
 
@@ -33,5 +34,7 @@ app.use('/api', studentRoutes);
 app.use((_req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
+
+app.use(globalErrorHandler);
 
 export default app;
