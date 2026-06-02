@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import api from '../utils/axios';
 import { decryptStudentFields } from '../utils/crypto';
 import StudentForm, { StudentData } from './StudentForm';
@@ -39,6 +39,7 @@ const StudentList: React.FC<StudentListProps> = ({ onLogout }) => {
   const [editStudent, setEditStudent] = useState<StudentData | undefined>();
   const [deleteId, setDeleteId]       = useState<string | null>(null);
   const [searchTerm, setSearchTerm]   = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [viewStudent, setViewStudent] = useState<Student | null>(null);
   const [successMsg, setSuccessMsg]   = useState('');
 
@@ -74,6 +75,15 @@ const StudentList: React.FC<StudentListProps> = ({ onLogout }) => {
 
   useEffect(() => { fetchStudents(); }, [fetchStudents]);
 
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      console.log('Searching for:', searchTerm);
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchTerm]);
+
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
     setTimeout(() => setSuccessMsg(''), 3000);
@@ -108,9 +118,6 @@ const StudentList: React.FC<StudentListProps> = ({ onLogout }) => {
       const loggedInUserId = localStorage.getItem("userId");
 
       if (loggedInUserId === deleteId) {
-        localStorage.removeItem("auth_token");
-        localStorage.removeItem("userId");
-
         onLogout();
 
         return;
@@ -124,11 +131,14 @@ const StudentList: React.FC<StudentListProps> = ({ onLogout }) => {
     }
   };
 
-  const filtered = students.filter(s =>
-    s.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    s.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    s.courseEnrolled.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = useMemo(() => {
+    const lowercasedTerm = debouncedSearchTerm.toLowerCase();
+    return students.filter(s => 
+      s.fullName.toLowerCase().includes(lowercasedTerm) || 
+      s.email.toLowerCase().includes(lowercasedTerm) ||
+      s.courseEnrolled.toLowerCase().includes(lowercasedTerm)
+    );
+  }, [students, debouncedSearchTerm]);
 
   if (showForm) {
     return (

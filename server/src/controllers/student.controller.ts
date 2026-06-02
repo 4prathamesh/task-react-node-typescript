@@ -9,6 +9,23 @@ import {
 } from '../services/student.service';
 import { catchAsync } from '../utils/catchAsync';
 
+export const uploadStudentImage = async(req: Request, res: Response): Promise<void> => {
+  try {
+    console.log('Received file:', req.file);
+    if(!req.file){
+      res.status(400).json({ message: 'No file uploaded' });
+      return;
+    }
+    res.status(200).json({
+      success: true,
+      filename: req.file.filename,
+      path: `/volume/student/${req.file.filename}`
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error uploading file' });
+  }
+};
+
 
 // REGISTER
 export const registerStudent = catchAsync(async (req: Request, res: Response) => {

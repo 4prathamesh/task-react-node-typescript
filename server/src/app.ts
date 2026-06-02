@@ -3,11 +3,12 @@ import cors from 'cors';
 import helmet from 'helmet';
 import studentRoutes from './routes/student.routes';
 import { globalErrorHandler } from './middleware/error.middleware';
+import path from 'path';
 
 const app = express();
 
 app.use(helmet());
-
+app.use(express.static(path.join(__dirname, '../../volume/student')));
 const allowedOrigins = [
   process.env.CLIENT_URL,
   'http://localhost:5173',
